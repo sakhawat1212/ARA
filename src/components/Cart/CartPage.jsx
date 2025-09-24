@@ -92,7 +92,10 @@ const CartPage = () => {
                     </td>
                     <td className="border px-3 py-2">
                       <button
-                        onClick={() => removeFromCart(item.id)}
+                        onClick={() => {
+                          if (!item.id) return; // safety check
+                          removeFromCart(item.id);
+                        }}
                         className="text-red-500 text-sm"
                       >
                         Remove
