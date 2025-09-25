@@ -16,7 +16,7 @@ import BrandDetailPage from "./components/pages/BrandDetailPage/BrandDetailPage"
 import CartPage from "./components/Cart/CartPage"; 
 import CheckoutPage from "./components/Checkout/CheckoutPage"; 
 import { CartProvider } from "./context/CartContext";
-import { ProductProvider } from "./context/ProductContext";
+import ProductProvider from "./context/ProductContext"; // ✅ default import
 import PaymentPage from "./components/Payment/PaymentPage";
 import OrderSuccess from "./components/Payment/OrderSuccess";
 import BrandsSection from "./components/BrandsSection/BrandsSection";
@@ -69,7 +69,6 @@ function App() {
             </main>
             
             <Footer />
-            {/* ❌ Removed duplicate <CartSidebar /> */}
           </Router>
         </div>
       </CartProvider>

@@ -4,7 +4,7 @@ import { useCart } from "../../context/CartContext";
 import { useNavigate } from "react-router-dom";
 
 const CartSidebar = ({ isOpen, onClose }) => {
-  const { cartItems, addToCart, removeFromCart } = useCart();
+  const { cartItems, increaseQuantity, decreaseQuantity, removeFromCart } = useCart();
   const navigate = useNavigate();
 
   // Helper to ensure price is always a number
@@ -15,7 +15,7 @@ const CartSidebar = ({ isOpen, onClose }) => {
     return 0;
   };
 
-  // ✅ Subtotal calculation
+  // Subtotal calculation
   const subtotal = cartItems.reduce(
     (acc, item) => acc + getPriceNumber(item.price) * item.quantity,
     0
@@ -51,7 +51,7 @@ const CartSidebar = ({ isOpen, onClose }) => {
             <p className="text-gray-500 text-center">Your cart is empty</p>
           ) : (
             cartItems.map((item) => (
-              <div key={item.id} className="border-b pb-3 flex flex-col gap-2">
+              <div key={item.cartId} className="border-b pb-3 flex flex-col gap-2">
                 {/* Name in Red */}
                 <span className="text-red-600 font-semibold text-base">
                   {item.name}
@@ -70,14 +70,14 @@ const CartSidebar = ({ isOpen, onClose }) => {
                 {/* Quantity Box */}
                 <div className="flex items-center gap-2">
                   <button
-                    onClick={() => removeFromCart(item.id)}
+                    onClick={() => decreaseQuantity(item.cartId)}
                     className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 text-lg font-bold"
                   >
                     -
                   </button>
                   <span className="px-3">{item.quantity}</span>
                   <button
-                    onClick={() => addToCart({ ...item, quantity: 1 })}
+                    onClick={() => increaseQuantity(item.cartId)}
                     className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 text-lg font-bold"
                   >
                     +
@@ -105,9 +105,9 @@ const CartSidebar = ({ isOpen, onClose }) => {
           </button>
           <button
             onClick={() => navigate("/checkout", { state: { fromSidebar: true } })}
-             className="bg-green-600 text-white w-full py-2 rounded hover:bg-green-700"
-             >
-             Go to Checkout
+            className="bg-green-600 text-white w-full py-2 rounded hover:bg-green-700"
+          >
+            Go to Checkout
           </button>
         </div>
       </div>

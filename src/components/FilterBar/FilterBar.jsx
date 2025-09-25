@@ -1,11 +1,27 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import brands from "../../data/brands";
+import accessories from "../../data/accessories";
+import carCareData from "../../data/CarCareData";
 
 const FilterBox = () => {
   const navigate = useNavigate();
   const [make, setMake] = useState("");
   const [model, setModel] = useState("");
   const [year, setYear] = useState("");
+
+  // saara data merge
+  const allData = [...brands, ...accessories, ...carCareData];
+
+  // flatten karke sab products nikaalna
+  const allProducts = allData.flatMap((item) =>
+    item.products ? item.products : item.children?.flatMap((c) => c.products || [])
+  );
+
+  // unique values filter ke liye
+  const makes = [...new Set(allProducts.map((p) => p.make).filter(Boolean))];
+  const models = [...new Set(allProducts.map((p) => p.model).filter(Boolean))];
+  const years = [...new Set(allProducts.map((p) => p.year).filter(Boolean))];
 
   const handleFilter = () => {
     navigate("/results", { state: { make, model, year } });
@@ -23,10 +39,9 @@ const FilterBox = () => {
           onChange={(e) => setMake(e.target.value)}
         >
           <option>Select Make</option>
-          <option>Toyota</option>
-          <option>Honda</option>
-          <option>Suzuki</option>
-          <option>Kia</option>
+          {makes.map((m) => (
+            <option key={m}>{m}</option>
+          ))}
         </select>
 
         <select
@@ -34,10 +49,9 @@ const FilterBox = () => {
           onChange={(e) => setModel(e.target.value)}
         >
           <option>Select Model</option>
-          <option>Corolla</option>
-          <option>Civic</option>
-          <option>Alto</option>
-          <option>Sportage</option>
+          {models.map((m) => (
+            <option key={m}>{m}</option>
+          ))}
         </select>
 
         <select
@@ -45,10 +59,9 @@ const FilterBox = () => {
           onChange={(e) => setYear(e.target.value)}
         >
           <option>Select Year</option>
-          <option>2025</option>
-          <option>2024</option>
-          <option>2023</option>
-          <option>2022</option>
+          {years.map((y) => (
+            <option key={y}>{y}</option>
+          ))}
         </select>
 
         <button

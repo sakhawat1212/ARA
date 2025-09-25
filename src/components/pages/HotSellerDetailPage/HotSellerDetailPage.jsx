@@ -54,8 +54,8 @@ const HotSellerDetailPage = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
-      {/* Confirmation Banner */}
+    <div className="max-w-6xl mx-auto p-4">
+      {/* ✅ Confirmation Banner */}
       {showConfirmation && (
         <div className="mb-4 p-4 bg-green-100 border border-green-400 rounded flex justify-between items-center">
           <span className="text-green-800 font-medium">
@@ -70,61 +70,64 @@ const HotSellerDetailPage = () => {
         </div>
       )}
 
-      {/* Back Button */}
+      {/* ✅ Back Button */}
       <button
         onClick={() => navigate(-1)}
-        className="mb-6 flex items-center gap-2 text-sm bg-gray-200 px-3 py-1 rounded-md hover:bg-gray-300"
+        className="mb-4 flex items-center gap-2 text-sm bg-gray-200 px-3 py-1 rounded-md hover:bg-gray-300"
       >
         ⬅ Back
       </button>
 
-      {/* Main Product Section */}
-      <div className="bg-white rounded-lg shadow-md p-6 flex flex-col md:flex-row gap-6 mb-10">
+      {/* ✅ Main Product Section */}
+      <div className="flex flex-col md:flex-row gap-6 mb-10">
+        {/* Left: Image */}
         <div className="md:w-1/2 flex justify-center">
           <img
             src={currentProduct.img || "https://placehold.co/400x400"}
             alt={currentProduct.name}
-            className="w-full h-80 object-cover rounded"
+            className="w-64 h-64 object-cover rounded-lg"
           />
         </div>
-        <div className="flex-1 flex flex-col justify-between">
-          <div>
-            <h2 className="text-2xl font-bold mb-2">{currentProduct.name}</h2>
-            <p className="text-gray-600 mb-3">{currentProduct.desc}</p>
-            {/* RS with space */}
-            <p className="text-xl font-semibold mb-4">
-              {currentProduct.price.includes("RS") 
-                ? currentProduct.price.replace(/^RS/, "RS ") 
-                : currentProduct.price}
-            </p>
-          </div>
+
+        {/* Right: Details */}
+        <div className="md:w-1/2 flex flex-col justify-start gap-3">
+          <h2 className="text-2xl font-bold">{currentProduct.name}</h2>
+          <p className="text-gray-600">{currentProduct.desc}</p>
+          <p className="font-bold text-xl">
+            {currentProduct.price.includes("RS")
+              ? currentProduct.price.replace(/^RS/, "RS ")
+              : currentProduct.price}
+          </p>
 
           {/* Quantity + Add to Cart */}
-          <div className="flex items-center gap-3 mb-4">
-            <button
-              onClick={() => handleQuantityChange("decrease")}
-              className="bg-gray-300 px-3 py-1 rounded"
-            >
-              -
-            </button>
-            <span className="text-lg font-semibold">{quantity}</span>
-            <button
-              onClick={() => handleQuantityChange("increase")}
-              className="bg-gray-300 px-3 py-1 rounded"
-            >
-              +
-            </button>
+          <div className="flex items-center gap-4 mt-4">
+            <div className="flex items-center border rounded">
+              <button
+                onClick={() => handleQuantityChange("decrease")}
+                className="px-3 py-1 text-lg font-bold bg-gray-200 hover:bg-gray-300"
+              >
+                -
+              </button>
+              <span className="px-4">{quantity}</span>
+              <button
+                onClick={() => handleQuantityChange("increase")}
+                className="px-3 py-1 text-lg font-bold bg-gray-200 hover:bg-gray-300"
+              >
+                +
+              </button>
+            </div>
+
             <button
               onClick={() => handleAddToCart(currentProduct, quantity, true)}
-              className="bg-red-500 text-white px-6 py-2 rounded-md hover:bg-yellow-500 font-semibold"
+              className="bg-red-500 text-white px-5 py-2 rounded-md hover:bg-red-600"
             >
-              Add to Cart
+              Add To Cart
             </button>
           </div>
         </div>
       </div>
 
-      {/* Related Products */}
+      {/* ✅ Related Products */}
       {relatedProducts.length > 0 && (
         <>
           <h3 className="text-xl font-semibold mb-4">Related Products</h3>
@@ -142,10 +145,9 @@ const HotSellerDetailPage = () => {
                 />
                 <h4 className="font-semibold text-sm mb-1">{rp.name}</h4>
                 <p className="text-gray-600 text-xs mb-1">{rp.desc}</p>
-                {/* RS with space */}
                 <p className="font-bold text-sm mb-2">
-                  {rp.price.includes("RS") 
-                    ? rp.price.replace(/^RS/, "RS ") 
+                  {rp.price.includes("RS")
+                    ? rp.price.replace(/^RS/, "RS ")
                     : rp.price}
                 </p>
                 <button
@@ -163,7 +165,7 @@ const HotSellerDetailPage = () => {
         </>
       )}
 
-      {/* Sidebar */}
+      {/* ✅ Sidebar */}
       <CartSidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
     </div>
   );

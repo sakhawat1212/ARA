@@ -1,3 +1,4 @@
+// src/context/ProductContext.jsx
 import React, { createContext, useContext, useState, useEffect } from "react";
 import brandsData from "../data/brands";
 import accessoriesData from "../data/accessories";
@@ -92,4 +93,14 @@ export const ProductProvider = ({ children }) => {
   );
 };
 
-export const useProducts = () => useContext(ProductContext);
+// ✅ Always define hook as named export
+export const useProducts = () => {
+  const context = useContext(ProductContext);
+  if (!context) {
+    throw new Error("useProducts must be used within a ProductProvider");
+  }
+  return context;
+};
+
+// ✅ Default export = Provider
+export default ProductProvider;

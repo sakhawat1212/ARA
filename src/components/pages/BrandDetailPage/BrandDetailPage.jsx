@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import brands from "../../../data/brands";
 import { useCart } from "../../../context/CartContext";
-import CartSidebar from "../../CartSidebar/CartSidebar"; // ✅ Sidebar import
+import CartSidebar from "../../CartSidebar/CartSidebar";
 
 const BrandDetailPage = () => {
   const { brandName, productId } = useParams();
@@ -57,14 +57,14 @@ const BrandDetailPage = () => {
     if (type === "increase") setQuantity(quantity + 1);
   };
 
-  const handleAddToCart = (prod, qty = 1, openSidebar = false) => {
+  const handleAddToCart = (prod, qty = 1, openSidebar = false, fromRelated = false) => {
     const numericPrice = getPriceNumber(prod.price);
     const numericProduct = {
       ...prod,
       quantity: qty,
       price: numericPrice,
     };
-    addToCart(numericProduct);
+    addToCart(numericProduct, fromRelated);
     setConfirmationProduct(prod.name);
     setShowConfirmation(true);
 
@@ -100,7 +100,6 @@ const BrandDetailPage = () => {
 
       {/* Main Product */}
       <div className="flex flex-col md:flex-row gap-10 mb-10 items-start">
-        {/* Left: Product Image */}
         <div className="md:w-1/2 flex justify-center">
           <div className="bg-white border rounded-lg flex items-center justify-center h-80 w-80 shadow-md">
             <img
@@ -112,7 +111,6 @@ const BrandDetailPage = () => {
           </div>
         </div>
 
-        {/* Right: Product Info */}
         <div className="md:w-1/2 flex flex-col gap-4">
           <h2 className="text-2xl font-bold">{mainProduct.name}</h2>
           <p className="text-gray-600">{mainProduct.desc}</p>
@@ -121,7 +119,6 @@ const BrandDetailPage = () => {
           </p>
 
           <div className="flex items-center gap-4 mt-2">
-            {/* Quantity Selector */}
             <div className="flex items-center border rounded">
               <button
                 onClick={() => handleQuantityChange("decrease")}
@@ -138,7 +135,6 @@ const BrandDetailPage = () => {
               </button>
             </div>
 
-            {/* Add to Cart */}
             <button
               onClick={() => handleAddToCart(mainProduct, quantity, true)}
               className="bg-red-500 text-white px-6 py-2 rounded-md hover:bg-red-600"
@@ -182,7 +178,7 @@ const BrandDetailPage = () => {
                     className="bg-yellow-400 text-black px-3 py-1 rounded-md hover:bg-yellow-500 text-xs"
                     onClick={(e) => {
                       e.stopPropagation();
-                      handleAddToCart(rp, 1, true);
+                      handleAddToCart(rp, 1, true, true); // 👈 fromRelated = true
                     }}
                   >
                     Add To Cart
@@ -194,7 +190,6 @@ const BrandDetailPage = () => {
         </>
       )}
 
-      {/* Sidebar */}
       <CartSidebar
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
